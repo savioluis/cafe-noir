@@ -118,6 +118,11 @@ i {
     border-bottom: 1px solid #008F8C;
 }
 
+.text-decoration-none {
+    margin-left: 180px;
+    font-size: small;
+}
+
 .submit {
     border: none;
     outline: none;
