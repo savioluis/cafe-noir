@@ -14,12 +14,8 @@ closeShopping.addEventListener('click', () => {
 })
 
 let products = [
-
-
     {
         id: 1,
-        type: 'coffee',
-        subtype: 'cold coffee',
         name: 'COLD COFFEE',
         image: '7.PNG',
         price: 10,
@@ -27,99 +23,41 @@ let products = [
     },
     {
         id: 2,
-        type: 'coffee',
-        subtype: 'cold coffee',
         name: 'HOT COFFEE',
         image: '7.PNG',
         price: 5
     },
     {
         id: 3,
-        name: 'COOKIE MILKSHAKE',
-        type: 'coffee',
-        subtype: 'hot coffee',
+        name: 'Cookie Milkshake',
         image: '8.PNG',
         price: 6
     },
     {
         id: 4,
         name: 'Hot Chocolate',
-        type: 'drink',
         size: 'small',
-        subtype: 'cold drink',
         image: '9.PNG',
         price: 8
     },
     {
         id: 5,
         name: 'PRODUCT NAME 5',
-        type: 'drink',
-        subtype: 'hot drink',
         image: '10.PNG',
         price: 7
     },
     {
         id: 6,
         name: 'PRODUCT NAME 6',
-        type: 'drink',
-        subtype: 'iced tea',
         image: '11.PNG',
         price: 1.50
     },
     {
         id: 7,
         name: 'PRODUCT NAME 6',
-        type: 'drink',
-        subtype: 'hot tea',
         image: '12.PNG',
         price: 3.50
     },
-    {
-        id: 8,
-        name: 'PRODUCT NAME 6',
-        type: 'food',
-        subtype: 'pastry',
-        image: '6.PNG',
-        price: 5.50
-    },
-    {
-        id: 9,
-        name: 'PRODUCT NAME 6',
-        type: 'food',
-        subtype: 'sweet',
-        image: '1.PNG',
-        price: 15
-    },
-    {
-        id: 10,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'coffee beans',
-        image: '2.PNG',
-        price: 20
-    },
-    {
-        id: 11,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'mug',
-        image: '3.PNG',
-        price: 22
-    },
-    {
-        id: 12,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'cups',
-        image: '4.PNG',
-        price: 14
-    },
-    {
-        id: 13,
-        name: 'PRODUCT NAME 6',
-        image: '5.PNG',
-        price: 6
-    }
 ];
 
 
