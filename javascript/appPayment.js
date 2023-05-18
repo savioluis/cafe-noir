@@ -20,11 +20,15 @@ function initApp() {
     axios.get('http://localhost:3000/products')
     .then(function (response) {
         products=response.data;
+        if(products.length<=0){
+            console.log("Execption vai ser jogado")
+            throw new Error('Não há produto cadastrado no banco');
+        }
     })
     .catch(function (err) {
-        console.log("Erro em dar get em products no arquivo appPayment.js");
+        document.getElementById("menu_title").innerHTML = '<div class="alert alert-danger" role="alert">' + err.message + " 😢" + '</div>';
     });
-    var delayInMilliseconds = 100;
+    var delayInMilliseconds = 250;
     setTimeout(function() {
         products.forEach((value, key) => {
             let newDiv = document.createElement('div');
