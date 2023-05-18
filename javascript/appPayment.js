@@ -13,68 +13,30 @@ closeShopping.addEventListener('click', () => {
     body.classList.remove('active');
 })
 
-let products = [
-    {
-        id: 1,
-        name: 'COLD COFFEE',
-        image: '7.PNG',
-        price: 10,
-        size: 'small'
-    },
-    {
-        id: 2,
-        name: 'HOT COFFEE',
-        image: '7.PNG',
-        price: 5
-    },
-    {
-        id: 3,
-        name: 'Cookie Milkshake',
-        image: '8.PNG',
-        price: 6
-    },
-    {
-        id: 4,
-        name: 'Hot Chocolate',
-        size: 'small',
-        image: '9.PNG',
-        price: 8
-    },
-    {
-        id: 5,
-        name: 'PRODUCT NAME 5',
-        image: '10.PNG',
-        price: 7
-    },
-    {
-        id: 6,
-        name: 'PRODUCT NAME 6',
-        image: '11.PNG',
-        price: 1.50
-    },
-    {
-        id: 7,
-        name: 'PRODUCT NAME 6',
-        image: '12.PNG',
-        price: 3.50
-    },
-];
-
-
-
+let products=[];
 let listCards = [];
 
 function initApp() {
-    products.forEach((value, key) => {
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('item');
-        newDiv.innerHTML = `
-            <img src="../imgs/${value.image}">
-            <div class="title">${value.name}</div>
-            <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
-            <button onclick="addToCard(${key})">Add To Card</button>`;
-        list.appendChild(newDiv);
+    axios.get('http://localhost:3000/products')
+    .then(function (response) {
+        products=response.data;
     })
+    .catch(function (err) {
+        console.log("Erro em dar get em products no arquivo appPayment.js");
+    });
+    var delayInMilliseconds = 100;
+    setTimeout(function() {
+        products.forEach((value, key) => {
+            let newDiv = document.createElement('div');
+            newDiv.classList.add('item');
+            //<img src="../imgs/${value.image}"></img>
+            newDiv.innerHTML = `
+                <div class="title">${value.name}</div>
+                <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
+                <button onclick="addToCard(${key})">Add To Card</button>`;
+            list.appendChild(newDiv);
+        })
+    }, delayInMilliseconds);
 }
 
 initApp();
