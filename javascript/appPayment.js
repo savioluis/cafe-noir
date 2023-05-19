@@ -21,8 +21,8 @@ function initApp() {
     .then(function (response) {
         products=response.data;
         if(products.length<=0){
-            console.log("Execption vai ser jogado")
-            throw new Error('Não há produto cadastrado no banco');
+            // console.log("Execption vai ser jogado")
+            throw new Error('There is no product registered in the database');
         }
     })
     .catch(function (err) {
@@ -33,9 +33,9 @@ function initApp() {
         products.forEach((value, key) => {
             let newDiv = document.createElement('div');
             newDiv.classList.add('item');
-            //<img src="../imgs/${value.image}"></img>
             newDiv.innerHTML = `
-                <div class="title">${value.name}</div>
+            <div class="title">${value.name}</div>
+            <img src="${value.image}"></img>
                 <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
                 <button onclick="addToCard(${key})">Add To Card</button>`;
             list.appendChild(newDiv);
@@ -66,7 +66,7 @@ function reloadCard() {
         if (value != null) {
             let newDiv = document.createElement('li');
             newDiv.innerHTML = `
-                <div><img src="../imgs/${value.image}"/></div>
+                <div><img src="${value.image}"/></div>
                 <div>${value.name}</div>
                 <div>Size: ${value.size}</div>
                 <div>U$ ${value.price.toFixed(2).toLocaleString()}</div>
