@@ -68,7 +68,6 @@ function reloadCard() {
             newDiv.innerHTML = `
                 <div><img src="${value.image}"/></div>
                 <div>${value.name}</div>
-                <div>Size: ${value.size}</div>
                 <div>U$ ${value.price.toFixed(2).toLocaleString()}</div>
                 <div>
                     <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
@@ -87,6 +86,7 @@ function changeQuantity(key, quantity) {
         delete listCards[key];
     } else {
         listCards[key].quantity = quantity;
+        console.log(listCards[key]);
         listCards[key].price = quantity * products[key].price;
     }
     reloadCard();
