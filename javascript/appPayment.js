@@ -13,34 +13,31 @@ closeShopping.addEventListener('click', () => {
     body.classList.remove('active');
 })
 
-let products=[];
+let products = [];
 let listCards = [];
 
 function initApp() {
     axios.get('http://localhost:3000/products')
-    .then(function (response) {
-        products=response.data;
-        if(products.length<=0){
-            // console.log("Execption vai ser jogado")
-            throw new Error('There is no product registered in the database');
-        }
-    })
-    .catch(function (err) {
-        document.getElementById("menu_title").innerHTML = '<div class="alert alert-danger" role="alert">' + err.message + " 😢" + '</div>';
-    });
-    var delayInMilliseconds = 250;
-    setTimeout(function() {
-        products.forEach((value, key) => {
-            let newDiv = document.createElement('div');
-            newDiv.classList.add('item');
-            newDiv.innerHTML = `
+        .then(function (response) {
+            products = response.data;
+            if (products.length <= 0) {
+                // console.log("Execption vai ser jogado")
+                throw new Error('There is no product registered in the database');
+            }
+            products.forEach((value, key) => {
+                let newDiv = document.createElement('div');
+                newDiv.classList.add('item');
+                newDiv.innerHTML = `
             <div class="title">${value.name}</div>
             <img src="${value.image}"></img>
                 <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
                 <button onclick="addToCard(${key})">Add To Card</button>`;
-            list.appendChild(newDiv);
+                list.appendChild(newDiv);
+            })
         })
-    }, delayInMilliseconds);
+        .catch(function (err) {
+            document.getElementById("menu_title").innerHTML = '<div class="alert alert-danger" role="alert">' + err.message + " 😢" + '</div>';
+        });
 }
 
 initApp();
