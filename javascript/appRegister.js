@@ -23,10 +23,10 @@ button.addEventListener("click", () => {
             tel: tel,
         })
             .then((response) => {
-                console.log("User added");
+                window.location.href = "login.html";
             })
             .catch(function (err) {
-                console.log(err);
+                alert("Error !");
             })
     }
 });
@@ -40,12 +40,7 @@ const passwordValidation = (password, passwordConfirm) => {
 } 
     
 const emailValidation = email => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-  {
-    return (true)
-  }
-    // alert("You have entered an invalid email address!")
-    return (false)
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
 };
 
 const checkBoxValidation = () => {
