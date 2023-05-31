@@ -6,33 +6,24 @@ button.addEventListener("click", () => {
     const email = emailInput.value;
     const password = passwordInput.value;
 
-    // axios.post("http://localhost:3000/users", {
-    //     email: email,
-    //     password: password,
-    // })
-
     axios.get('http://localhost:3000/users')
         .then(function (response) {
-            console.log(typeof password);
-            const test = response.data;
-            var verifica = false
-            test.forEach(element => {
-                if (email == element['email']) {
-                    //email existe
-                    if (password == element['password']) {
-                        verifica = true;
-                    }
-                    console.log('email existe');
+            const users = response.data;
+            var validated = false
+            users.forEach(user => {
+                if (email == user['email']) {
+                    if (password == user['password'])
+                        validated = true;
                 }
             })
-            if (verifica == true) {
+            if (validated) {
                 window.location.href = "menu.html"
             } else {
-                throw new Error("Wrong !");
+                throw new Error("Invalid Account !");
             }
         })
         .catch(function (err) {
-            console.log(err);
+            alert(err)
         });
 
 
