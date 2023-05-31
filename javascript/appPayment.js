@@ -1,90 +1,102 @@
-let openShopping = document.querySelector('.shopping');
-let closeShopping = document.querySelector('.closeShopping');
-let list = document.querySelector('.list');
-let listCard = document.querySelector('.listCard');
-let body = document.querySelector('body');
-let total = document.querySelector('.total');
-let quantity = document.querySelector('.quantity');
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
 
-openShopping.addEventListener('click', () => {
-    body.classList.add('active');
-})
-closeShopping.addEventListener('click', () => {
-    body.classList.remove('active');
-})
+var urlSplit = id.split('_');
+var mapProducts = [];
+var totalPrice=0;
+for (var i = 0; i < urlSplit.length-1; i++) {
+    idQuantitySplit = urlSplit[i].split('-')
+    mapActualProduct = new Map()
+    mapActualProduct.set('id', idQuantitySplit[0])
+    mapActualProduct.set('quantity', idQuantitySplit[1])
+    mapActualProduct.set('price', idQuantitySplit[2])
+    mapProducts.push(mapActualProduct)
+}
 
-let products = [];
-let listCards = [];
+for (var i = 0; i < mapProducts.length; i++) {
+    totalPrice+=parseFloat(mapProducts[i].get('price'))
+}
+console.log(totalPrice)
 
-function initApp() {
-    axios.get('http://localhost:3000/products')
-        .then(function (response) {
-            products = response.data;
-            if (products.length <= 0) {
-                // console.log("Execption vai ser jogado")
-                throw new Error('There is no product registered in the database');
-            }
-            products.forEach((value, key) => {
-                let newDiv = document.createElement('div');
-                newDiv.classList.add('item');
-                newDiv.innerHTML = `
-            <div class="title">${value.name}</div>
-            <img src="${value.image}"></img>
-                <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
-                <button onclick="addToCard(${key})">Add To Card</button>`;
-                list.appendChild(newDiv);
-            })
+
+
+console.log(mapProducts)
+const listAux = mapProducts.map((map) => Object.fromEntries(map));
+const listJSON = JSON.stringify(listAux, null, 2);
+
+
+
+//payment informations
+
+const cardHolderInput = document.getElementById("card-holder");
+const creditCardNumberInput = document.getElementById("card-number");
+const expirationDateInput = document.getElementById("expiration-date");
+const cvvInput = document.getElementById("cvv");
+
+//address informations
+
+const address1Input = document.getElementById("address1");
+const address2Input = document.getElementById("address2");
+const zipCodeInput = document.getElementById("zip-code");
+const countryInput = document.getElementById("country");
+const complementInput = document.getElementById("complement");
+
+const button = document.getElementById("btn");
+
+const creditCardNumberValidation = (number) => {
+    if (number.length == 16)
+        return true;
+    else
+        throw new Error("Invalid Credit Card");
+}
+
+const cvvValidation = (number) => {
+    if (number.length == 3)
+        return true;
+    else
+        throw new Error("Invalid CVV");
+}
+
+const expirationDateValidation = (date) => {
+    if (date.length == 4)
+        return true;
+    else
+        throw new Error("Invalid Expiration Date");
+}
+
+
+button.addEventListener("click", () => {
+    const cardHolder = cardHolderInput.value
+    const creditCardNumber = creditCardNumberInput.value
+    const expirationDate = expirationDateInput.value
+    const cvv = cvvInput.value
+    const address1 = address1Input.value
+    const address2 = address2Input.value
+    const zipCode = zipCodeInput.value
+    const country = countryInput.value
+    const complement = complementInput.value
+
+    try {
+        //creditCardNumberValidation(creditCardNumber)
+        //cvvValidation(cvv)
+        //expirationDateValidation(expirationDate)
+
+        axios.post("http://localhost:3000/purchases", {
+            cardHolder: cardHolder,
+            creditCardNumber: creditCardNumber,
+            expirationDate: expirationDate,
+            cvv: cvv,
+            address1: address1,
+            address2: address2,
+            zipCode: zipCode,
+            country: country,
+            complement: complement,
+            products:listJSON,
+            totalPrice:totalPrice,
+
         })
-        .catch(function (err) {
-            document.getElementById("menu_title").innerHTML = '<div class="alert alert-danger" role="alert">' + err.message + " 😢" + '</div>';
-        });
-}
-
-initApp();
-
-function addToCard(key) {
-    if (listCards[key] == null) {
-        // copy product form list to list card
-        listCards[key] = JSON.parse(JSON.stringify(products[key]));
-        listCards[key].quantity = 1;
+    } catch (error) {
+        alert(error)
     }
-    reloadCard();
-}
+})
 
-function reloadCard() {
-    listCard.innerHTML = '';
-    let count = 0;
-    let totalPrice = 0;
-
-    listCards.forEach((value, key) => {
-        totalPrice = totalPrice + value.price;
-        count = count + value.quantity;
-
-        if (value != null) {
-            let newDiv = document.createElement('li');
-            newDiv.innerHTML = `
-                <div><img src="${value.image}"/></div>
-                <div>${value.name}</div>
-                <div>U$ ${value.price.toFixed(2).toLocaleString()}</div>
-                <div>
-                    <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
-                    <div class="count">${value.quantity}</div>
-                    <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
-                </div>`;
-            listCard.appendChild(newDiv);
-        }
-    })
-    total.innerText = `U$ ` + totalPrice.toFixed(2).toLocaleString();
-    quantity.innerText = count;
-}
-
-function changeQuantity(key, quantity) {
-    if (quantity == 0) {
-        delete listCards[key];
-    } else {
-        listCards[key].quantity = quantity;
-        console.log(listCards[key]);
-        listCards[key].price = quantity * products[key].price;
-    }
-    reloadCard();
-}
