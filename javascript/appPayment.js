@@ -1,27 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
 
-var urlSplit = id.split('_');
-var mapProducts = [];
-var totalPrice = 0;
-for (var i = 0; i < urlSplit.length - 1; i++) {
-    idQuantitySplit = urlSplit[i].split('-')
-    mapActualProduct = new Map()
-    mapActualProduct.set('id', idQuantitySplit[0])
-    mapActualProduct.set('quantity', idQuantitySplit[1])
-    mapActualProduct.set('price', idQuantitySplit[2])
-    mapProducts.push(mapActualProduct)
-}
-
-for (var i = 0; i < mapProducts.length; i++) {
-    totalPrice += parseFloat(mapProducts[i].get('price'))
-}
-
-const listAux = mapProducts.map((map) => Object.fromEntries(map));
-const listJSON = JSON.stringify(listAux, null, 2);
-
-
-
 //payment informations
 
 const cardHolderInput = document.getElementById("card-holder");
@@ -60,6 +39,26 @@ const expirationDateValidation = (date) => {
         throw new Error("Invalid Expiration Date");
 }
 
+var urlSplit = id.split('_');
+var mapProducts = [];
+var totalPrice = 0;
+
+const listAux = mapProducts.map((map) => Object.fromEntries(map));
+const listJSON = JSON.stringify(listAux, null, 2);
+
+for (var i = 0; i < urlSplit.length - 1; i++) {
+    idQuantitySplit = urlSplit[i].split('-')
+    mapActualProduct = new Map()
+    mapActualProduct.set('id', idQuantitySplit[0])
+    mapActualProduct.set('quantity', idQuantitySplit[1])
+    mapActualProduct.set('price', idQuantitySplit[2])
+    mapProducts.push(mapActualProduct)
+}
+
+for (var i = 0; i < mapProducts.length; i++) {
+    totalPrice += parseFloat(mapProducts[i].get('price'))
+}
+
 document.getElementById("price").innerHTML = '<p class="card-text" id="price">U$ ' + totalPrice.toFixed(2) + '</p>'
 
 button.addEventListener("click", () => {
@@ -74,9 +73,9 @@ button.addEventListener("click", () => {
     const complement = complementInput.value
 
     try {
-        creditCardNumberValidation(creditCardNumber)
-        cvvValidation(cvv)
-        expirationDateValidation(expirationDate)
+        // creditCardNumberValidation(creditCardNumber)
+        // cvvValidation(cvv)
+        // expirationDateValidation(expirationDate)
 
         axios.post("http://localhost:3000/purchases", {
             cardHolder: cardHolder,
@@ -91,12 +90,10 @@ button.addEventListener("click", () => {
             products: listJSON,
             totalPrice: totalPrice,
         })
-        .then(() => {
-            alert("Success !")
-            setTimeout(() => {
+            .then(() => {
+                alert("Successful Purchase 🤠")
                 window.location.href = "menu.html";
-            }, 2000);
-        })
+            })
 
     } catch (error) {
         alert(error)

@@ -16,7 +16,7 @@ const phoneValidation = phone => {
     if (phone.length == 11) {
         return true
     } else {
-        throw new Error("Invalid Number"), alert("Invalid Number")
+        throw new Error("Invalid Number")
     }
 }
 
@@ -49,6 +49,7 @@ const allInputValidation = (name, email, password, passwordConfirm, phone) => {
 }
 
 button.addEventListener("click", () => {
+
     const name = nameInput.value;
     const email = emailInput.value;
     const password = passwordInput.value;

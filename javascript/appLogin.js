@@ -18,8 +18,6 @@ button.addEventListener ("click", async () =>{
             })
             if (validated) {
                 window.location.href = "index.html"
-            } else {
-                throw new Error("Invalid Account !");
             }
         })
         .catch(function (err) {

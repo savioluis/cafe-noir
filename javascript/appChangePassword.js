@@ -23,9 +23,7 @@ button.addEventListener("click", () => {
         })
             .then(() => {
                 alert("Changed !")
-                setTimeout(() => {
-                    window.location.href = 'login.html' + '';
-                }, 1500);
+                window.location.href = 'login.html' + '';
             })
     } catch (error) {
         alert(error)
