@@ -43,9 +43,9 @@ var urlSplit = id.split('_');
 var mapProducts = [];
 var totalPrice = 0;
 
-const listAux = mapProducts.map((map) => Object.fromEntries(map));
-const listJSON = JSON.stringify(listAux, null, 2);
-
+var urlSplit = id.split('_');
+var mapProducts = [];
+var totalPrice = 0;
 for (var i = 0; i < urlSplit.length - 1; i++) {
     idQuantitySplit = urlSplit[i].split('-')
     mapActualProduct = new Map()
@@ -58,6 +58,9 @@ for (var i = 0; i < urlSplit.length - 1; i++) {
 for (var i = 0; i < mapProducts.length; i++) {
     totalPrice += parseFloat(mapProducts[i].get('price'))
 }
+
+const listAux = mapProducts.map((map) => Object.fromEntries(map));
+const listJSON = JSON.stringify(listAux, null, 2);
 
 document.getElementById("price").innerHTML = '<p class="card-text" id="price">U$ ' + totalPrice.toFixed(2) + '</p>'
 
@@ -73,9 +76,9 @@ button.addEventListener("click", () => {
     const complement = complementInput.value
 
     try {
-        // creditCardNumberValidation(creditCardNumber)
-        // cvvValidation(cvv)
-        // expirationDateValidation(expirationDate)
+        creditCardNumberValidation(creditCardNumber)
+        cvvValidation(cvv)
+        expirationDateValidation(expirationDate)
 
         axios.post("http://localhost:3000/purchases", {
             cardHolder: cardHolder,
