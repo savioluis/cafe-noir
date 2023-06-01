@@ -6,6 +6,8 @@ let body = document.querySelector('body');
 let total = document.querySelector('.total');
 let quantity = document.querySelector('.quantity');
 
+let buttonPay = document.getElementById("btn-pay")
+
 openShopping.addEventListener('click', () => {
     body.classList.add('active');
 })
@@ -21,7 +23,6 @@ function initApp() {
         .then(function (response) {
             products = response.data;
             if (products.length <= 0) {
-                // console.log("Execption vai ser jogado")
                 throw new Error('There is no product registered in the database');
             }
             products.forEach((value, key) => {
@@ -83,11 +84,14 @@ function changeQuantity(key, quantity) {
         delete listCards[key];
     } else {
         listCards[key].quantity = quantity;
-        console.log(listCards[key]);
         listCards[key].price = quantity * products[key].price;
     }
     reloadCard();
 }
+
+buttonPay.addEventListener("click", () => {
+    goToPayment()
+})
 
 function goToPayment() {
     let url = ''
@@ -98,9 +102,9 @@ function goToPayment() {
             let idProduct = listCards[i]._id;
             let quantityProduct = listCards[i].quantity;
             let priceProduct = listCards[i].price;
-            url += idProduct + '-' + quantityProduct + '' + priceProduct+'_';
+            url += idProduct + '-' + quantityProduct + '-' + priceProduct + '_';
         }
     }
 
-    window.location.href = 'payment.html?id=' + url + '' +totalPrice + '';
+    window.location.href = 'payment.html?id=' + url + '';
 }

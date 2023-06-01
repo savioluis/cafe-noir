@@ -3,8 +3,8 @@ const id = urlParams.get("id");
 
 var urlSplit = id.split('_');
 var mapProducts = [];
-var totalPrice=0;
-for (var i = 0; i < urlSplit.length-1; i++) {
+var totalPrice = 0;
+for (var i = 0; i < urlSplit.length - 1; i++) {
     idQuantitySplit = urlSplit[i].split('-')
     mapActualProduct = new Map()
     mapActualProduct.set('id', idQuantitySplit[0])
@@ -14,13 +14,9 @@ for (var i = 0; i < urlSplit.length-1; i++) {
 }
 
 for (var i = 0; i < mapProducts.length; i++) {
-    totalPrice+=parseFloat(mapProducts[i].get('price'))
+    totalPrice += parseFloat(mapProducts[i].get('price'))
 }
-console.log(totalPrice)
 
-
-
-console.log(mapProducts)
 const listAux = mapProducts.map((map) => Object.fromEntries(map));
 const listJSON = JSON.stringify(listAux, null, 2);
 
@@ -64,6 +60,7 @@ const expirationDateValidation = (date) => {
         throw new Error("Invalid Expiration Date");
 }
 
+document.getElementById("price").innerHTML = '<p class="card-text" id="price">U$ ' + totalPrice.toFixed(2) + '</p>'
 
 button.addEventListener("click", () => {
     const cardHolder = cardHolderInput.value
@@ -91,10 +88,16 @@ button.addEventListener("click", () => {
             zipCode: zipCode,
             country: country,
             complement: complement,
-            products:listJSON,
-            totalPrice:totalPrice,
-
+            products: listJSON,
+            totalPrice: totalPrice,
         })
+        .then(() => {
+            alert("Success !")
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 2000);
+        })
+
     } catch (error) {
         alert(error)
     }
