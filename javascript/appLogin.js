@@ -17,7 +17,7 @@ button.addEventListener ("click", async () =>{
                 }
             })
             if (validated) {
-                window.location.href = "index.html"
+                window.location.href = "adminPanel.html"
             }
         })
         .catch(function (err) {
