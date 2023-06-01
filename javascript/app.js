@@ -173,5 +173,21 @@ router.delete('/purchases/:id', async function (req, res, next) {
     }
 });
 
+//API admins
+router.get('/admins/:id?', async function (req, res, next) {
+    try {
+        const db = await connect();
+        if (req.params.id) {
+            res.json(await db.collection("admins").findOne({ _id: new ObjectId(req.params.id) }));
+        } else {
+            res.json(await db.collection("admins").find().toArray());
+        }
+    } catch (error) {
+
+    }
+})
+
+
+
 app.listen(port);
 console.log("ok");

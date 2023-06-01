@@ -77,9 +77,9 @@ button.addEventListener("click", () => {
     const complement = complementInput.value
 
     try {
-        //creditCardNumberValidation(creditCardNumber)
-        //cvvValidation(cvv)
-        //expirationDateValidation(expirationDate)
+        creditCardNumberValidation(creditCardNumber)
+        cvvValidation(cvv)
+        expirationDateValidation(expirationDate)
 
         axios.post("http://localhost:3000/purchases", {
             cardHolder: cardHolder,
