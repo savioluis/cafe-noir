@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <div class="container">
         <!-- <div class="row"> -->
         <div class="col-md-4">
@@ -71,12 +72,23 @@
                     <input type="text" class="form-control" id="complement" placeholder="Enter your complement">
                 </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Price</h5>
+                    <p class="card-text" id="price"></p>
+                </div>
+            </div>
+        </div>
         <!-- </div> -->
     </div>
 
 
     <div class="d-grid gap-2 col-md-2 mx-4">
-        <button class="btn" type="button">Pay Now</button>
+        <button class="btn" id="btn" type="button">Pay Now</button>
     </div>
+
+    <script src="../javascript/appPayment.js"></script>
 
 </body>

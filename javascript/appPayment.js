@@ -1,189 +1,102 @@
-let openShopping = document.querySelector('.shopping');
-let closeShopping = document.querySelector('.closeShopping');
-let list = document.querySelector('.list');
-let listCard = document.querySelector('.listCard');
-let body = document.querySelector('body');
-let total = document.querySelector('.total');
-let quantity = document.querySelector('.quantity');
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
 
-openShopping.addEventListener('click', () => {
-    body.classList.add('active');
+//payment informations
+
+const cardHolderInput = document.getElementById("card-holder");
+const creditCardNumberInput = document.getElementById("card-number");
+const expirationDateInput = document.getElementById("expiration-date");
+const cvvInput = document.getElementById("cvv");
+
+//address informations
+
+const address1Input = document.getElementById("address1");
+const address2Input = document.getElementById("address2");
+const zipCodeInput = document.getElementById("zip-code");
+const countryInput = document.getElementById("country");
+const complementInput = document.getElementById("complement");
+
+const button = document.getElementById("btn");
+
+const creditCardNumberValidation = (number) => {
+    if (number.length == 16)
+        return true;
+    else
+        throw new Error("Invalid Credit Card");
+}
+
+const cvvValidation = (number) => {
+    if (number.length == 3)
+        return true;
+    else
+        throw new Error("Invalid CVV");
+}
+
+const expirationDateValidation = (date) => {
+    if (date.length == 4)
+        return true;
+    else
+        throw new Error("Invalid Expiration Date");
+}
+
+var urlSplit = id.split('_');
+var mapProducts = [];
+var totalPrice = 0;
+
+const listAux = mapProducts.map((map) => Object.fromEntries(map));
+const listJSON = JSON.stringify(listAux, null, 2);
+
+for (var i = 0; i < urlSplit.length - 1; i++) {
+    idQuantitySplit = urlSplit[i].split('-')
+    mapActualProduct = new Map()
+    mapActualProduct.set('id', idQuantitySplit[0])
+    mapActualProduct.set('quantity', idQuantitySplit[1])
+    mapActualProduct.set('price', idQuantitySplit[2])
+    mapProducts.push(mapActualProduct)
+}
+
+for (var i = 0; i < mapProducts.length; i++) {
+    totalPrice += parseFloat(mapProducts[i].get('price'))
+}
+
+document.getElementById("price").innerHTML = '<p class="card-text" id="price">U$ ' + totalPrice.toFixed(2) + '</p>'
+
+button.addEventListener("click", () => {
+    const cardHolder = cardHolderInput.value
+    const creditCardNumber = creditCardNumberInput.value
+    const expirationDate = expirationDateInput.value
+    const cvv = cvvInput.value
+    const address1 = address1Input.value
+    const address2 = address2Input.value
+    const zipCode = zipCodeInput.value
+    const country = countryInput.value
+    const complement = complementInput.value
+
+    try {
+        // creditCardNumberValidation(creditCardNumber)
+        // cvvValidation(cvv)
+        // expirationDateValidation(expirationDate)
+
+        axios.post("http://localhost:3000/purchases", {
+            cardHolder: cardHolder,
+            creditCardNumber: creditCardNumber,
+            expirationDate: expirationDate,
+            cvv: cvv,
+            address1: address1,
+            address2: address2,
+            zipCode: zipCode,
+            country: country,
+            complement: complement,
+            products: listJSON,
+            totalPrice: totalPrice,
+        })
+            .then(() => {
+                alert("Successful Purchase 🤠")
+                window.location.href = "menu.html";
+            })
+
+    } catch (error) {
+        alert(error)
+    }
 })
-closeShopping.addEventListener('click', () => {
-    body.classList.remove('active');
-})
 
-let products = [
-
-
-    {
-        id: 1,
-        type: 'coffee',
-        subtype: 'cold coffee',
-        name: 'COLD COFFEE',
-        image: '7.PNG',
-        price: 10,
-        size: 'small'
-    },
-    {
-        id: 2,
-        type: 'coffee',
-        subtype: 'cold coffee',
-        name: 'HOT COFFEE',
-        image: '7.PNG',
-        price: 5
-    },
-    {
-        id: 3,
-        name: 'COOKIE MILKSHAKE',
-        type: 'coffee',
-        subtype: 'hot coffee',
-        image: '8.PNG',
-        price: 6
-    },
-    {
-        id: 4,
-        name: 'Hot Chocolate',
-        type: 'drink',
-        size: 'small',
-        subtype: 'cold drink',
-        image: '9.PNG',
-        price: 8
-    },
-    {
-        id: 5,
-        name: 'PRODUCT NAME 5',
-        type: 'drink',
-        subtype: 'hot drink',
-        image: '10.PNG',
-        price: 7
-    },
-    {
-        id: 6,
-        name: 'PRODUCT NAME 6',
-        type: 'drink',
-        subtype: 'iced tea',
-        image: '11.PNG',
-        price: 1.50
-    },
-    {
-        id: 7,
-        name: 'PRODUCT NAME 6',
-        type: 'drink',
-        subtype: 'hot tea',
-        image: '12.PNG',
-        price: 3.50
-    },
-    {
-        id: 8,
-        name: 'PRODUCT NAME 6',
-        type: 'food',
-        subtype: 'pastry',
-        image: '6.PNG',
-        price: 5.50
-    },
-    {
-        id: 9,
-        name: 'PRODUCT NAME 6',
-        type: 'food',
-        subtype: 'sweet',
-        image: '1.PNG',
-        price: 15
-    },
-    {
-        id: 10,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'coffee beans',
-        image: '2.PNG',
-        price: 20
-    },
-    {
-        id: 11,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'mug',
-        image: '3.PNG',
-        price: 22
-    },
-    {
-        id: 12,
-        name: 'PRODUCT NAME 6',
-        type: 'merchandise',
-        subtype: 'cups',
-        image: '4.PNG',
-        price: 14
-    },
-    {
-        id: 13,
-        name: 'PRODUCT NAME 6',
-        image: '5.PNG',
-        price: 6
-    }
-];
-
-
-
-let listCards = [];
-
-function initApp() {
-    products.forEach((value, key) => {
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('item');
-        newDiv.innerHTML = `
-            <img src="../imgs/${value.image}">
-            <div class="title">${value.name}</div>
-            <div class="price">U$ ${value.price.toFixed(2).toLocaleString()}</div>
-            <button onclick="addToCard(${key})">Add To Card</button>`;
-        list.appendChild(newDiv);
-    })
-}
-
-initApp();
-
-function addToCard(key) {
-    if (listCards[key] == null) {
-        // copy product form list to list card
-        listCards[key] = JSON.parse(JSON.stringify(products[key]));
-        listCards[key].quantity = 1;
-    }
-    reloadCard();
-}
-
-function reloadCard() {
-    listCard.innerHTML = '';
-    let count = 0;
-    let totalPrice = 0;
-
-    listCards.forEach((value, key) => {
-        totalPrice = totalPrice + value.price;
-        count = count + value.quantity;
-
-        if (value != null) {
-            let newDiv = document.createElement('li');
-            newDiv.innerHTML = `
-                <div><img src="../imgs/${value.image}"/></div>
-                <div>${value.name}</div>
-                <div>Size: ${value.size}</div>
-                <div>U$ ${value.price.toFixed(2).toLocaleString()}</div>
-                <div>
-                    <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
-                    <div class="count">${value.quantity}</div>
-                    <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
-                </div>`;
-            listCard.appendChild(newDiv);
-        }
-    })
-    total.innerText = `U$ ` + totalPrice.toFixed(2).toLocaleString();
-    quantity.innerText = count;
-}
-
-function changeQuantity(key, quantity) {
-    if (quantity == 0) {
-        delete listCards[key];
-    } else {
-        listCards[key].quantity = quantity;
-        listCards[key].price = quantity * products[key].price;
-    }
-    reloadCard();
-}
