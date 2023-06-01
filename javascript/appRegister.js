@@ -3,7 +3,7 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const passwordConfirmInput = document.getElementById("passwordConfirm");
-const telInput = document.getElementById("tel");
+const phoneInput = document.getElementById("phone");
 const button = document.getElementById("btn")
 
 const nameValidation = name => {
@@ -42,10 +42,10 @@ const checkBoxValidation = () => {
     }
 }
 
-const allInputValidation = (name, email, password, passwordConfirm, tel) => {
+const allInputValidation = (name, email, password, passwordConfirm, phone) => {
     nameValidation(name), emailValidation(email)
     passwordValidation(password, passwordConfirm)
-    phoneValidation(tel), checkBoxValidation()
+    phoneValidation(phone), checkBoxValidation()
 }
 
 button.addEventListener("click", () => {
@@ -53,10 +53,10 @@ button.addEventListener("click", () => {
     const email = emailInput.value;
     const password = passwordInput.value;
     const passwordConfirm = passwordConfirmInput.value;
-    const tel = telInput.value;
+    const phone = phoneInput.value;
 
     try {
-        allInputValidation(name, email, password, passwordConfirm, tel)
+        allInputValidation(name, email, password, passwordConfirm, phone)
         axios.get('http://localhost:3000/users')
             .then(function (response) {
                 var hasEmail = false
@@ -70,7 +70,7 @@ button.addEventListener("click", () => {
                         name: name,
                         email: email,
                         password: password,
-                        tel: tel,
+                        phone: phone,
                     })
                         .then(() => {
                             window.location.href = "login.html";
